@@ -1,0 +1,21 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ShuDu.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="StartX" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">521</Value>
+    </Setting>
+    <Setting Name="StartY" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">159</Value>
+    </Setting>
+    <Setting Name="EndX" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">806</Value>
+    </Setting>
+    <Setting Name="EndY" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">458</Value>
+    </Setting>
+    <Setting Name="ConstWidth" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">32</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

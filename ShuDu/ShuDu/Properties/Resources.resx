@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Sample" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Image.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SampleJson" xml:space="preserve">
+    <value>{"Blocks":[{"Lines":[{"Text":"5","BoundingPolygon":[{"X":87,"Y":130},{"X":130,"Y":130},{"X":128,"Y":185},{"X":86,"Y":184}],"Words":[{"Text":"5","BoundingPolygon":[{"X":86,"Y":130},{"X":114,"Y":130},{"X":114,"Y":185},{"X":86,"Y":184}],"Confidence":0.96}]},{"Text":"8","BoundingPolygon":[{"X":200,"Y":128},{"X":245,"Y":127},{"X":244,"Y":182},{"X":199,"Y":183}],"Words":[{"Text":"8","BoundingPolygon":[{"X":205,"Y":128},{"X":233,"Y":127},{"X":234,"Y":181},{"X":206,"Y":182}],"Confidence":0.994}]},{"Text":"6","BoundingPolygon":[{"X":570,"Y":127},{"X":606,"Y":127},{"X":604,"Y":183},{"X":569,"Y":183}],"Words":[{"Text":"6","BoundingPolygon":[{"X":569,"Y":127},{"X":594,"Y":127},{"X":594,"Y":183},{"X":569,"Y":183}],"Confidence":0.994}]},{"Text":"9","BoundingPolygon":[{"X":75,"Y":244},{"X":133,"Y":247},{"X":132,"Y":306},{"X":72,"Y":306}],"Words":[{"Text":"9","BoundingPolygon":[{"X":81,"Y":244},{"X":117,"Y":245},{"X":116,"Y":307},{"X":80,"Y":306}],"Confidence":0.959}]},{"Text":"7","BoundingPolygon":[{"X":193,"Y":245},{"X":254,"Y":248},{"X":252,"Y":306},{"X":191,"Y":306}],"Words":[{"Text":"7","BoundingPolygon":[{"X":212,"Y":245},{"X":244,"Y":246},{"X":242,"Y":307},{"X":211,"Y":306}],"Confidence":0.994}]},{"Text":"5","BoundingPolygon":[{"X":564,"Y":248},{"X":610,"Y":249},{"X":608,"Y":304},{"X":563,"Y":303}],"Words":[{"Text":"5","BoundingPolygon":[{"X":564,"Y":248},{"X":592,"Y":249},{"X":591,"Y":304},{"X":563,"Y":303}],"Confidence":0.996}]},{"Text":"2","BoundingPolygon":[{"X":811,"Y":249},{"X":855,"Y":249},{"X":853,"Y":306},{"X":810,"Y":306}],"Words":[{"Text":"2","BoundingPolygon":[{"X":818,"Y":249},{"X":847,"Y":249},{"X":847,"Y":306},{"X":818,"Y":306}],"Confidence":0.996}]},{"Text":"4","BoundingPolygon":[{"X":1038,"Y":248},{"X":1087,"Y":248},{"X":1087,"Y":303},{"X":1036,"Y":304}],"Words":[{"Text":"4","BoundingPolygon":[{"X":1043,"Y":248},{"X":1072,"Y":248},{"X":1072,"Y":304},{"X":1043,"Y":304}],"Confidence":0.997}]},{"Text":"1","BoundingPolygon":[{"X":202,"Y":358},{"X":255,"Y":358},{"X":255,"Y":418},{"X":201,"Y":418}],"Words":[{"Text":"1","BoundingPolygon":[{"X":213,"Y":358},{"X":244,"Y":358},{"X":244,"Y":418},{"X":213,"Y":418}],"Confidence":0.994}]},{"Text":"2","BoundingPolygon":[{"X":303,"Y":359},{"X":361,"Y":359},{"X":361,"Y":418},{"X":301,"Y":418}],"Words":[{"Text":"2","BoundingPolygon":[{"X":321,"Y":359},{"X":351,"Y":359},{"X":351,"Y":418},{"X":321,"Y":418}],"Confidence":0.996}]},{"Text":"4","BoundingPolygon":[{"X":560,"Y":360},{"X":609,"Y":360},{"X":608,"Y":414},{"X":560,"Y":414}],"Words":[{"Text":"4","BoundingPolygon":[{"X":564,"Y":360},{"X":592,"Y":360},{"X":592,"Y":414},{"X":564,"Y":414}],"Confidence":0.996}]},{"Text":"8","BoundingPolygon":[{"X":671,"Y":358},{"X":717,"Y":360},{"X":716,"Y":414},{"X":671,"Y":414}],"Words":[{"Text":"8","BoundingPolygon":[{"X":675,"Y":358},{"X":704,"Y":359},{"X":702,"Y":415},{"X":674,"Y":414}],"Confidence":0.994}]},{"Text":"6","BoundingPolygon":[{"X":813,"Y":357},{"X":858,"Y":357},{"X":855,"Y":418},{"X":813,"Y":418}],"Words":[{"Text":"6","BoundingPolygon":[{"X":813,"Y":357},{"X":845,"Y":357},{"X":845,"Y":418},{"X":813,"Y":418}],"Confidence":0.978}]},{"Text":"7","BoundingPolygon":[{"X":79,"Y":493},{"X":132,"Y":497},{"X":129,"Y":553},{"X":75,"Y":550}],"Words":[{"Text":"7","BoundingPolygon":[{"X":97,"Y":494},{"X":126,"Y":496},{"X":123,"Y":552},{"X":93,"Y":550}],"Confidence":0.994}]},{"Text":"9","BoundingPolygon":[{"X":802,"Y":494},{"X":861,"Y":495},{"X":861,"Y":554},{"X":801,"Y":554}],"Words":[{"Text":"9","BoundingPolygon":[{"X":813,"Y":494},{"X":844,"Y":494},{"X":843,"Y":554},{"X":812,"Y":554}],"Confidence":0.993}]},{"Text":"5","BoundingPolygon":[{"X":912,"Y":495},{"X":969,"Y":497},{"X":968,"Y":554},{"X":910,"Y":553}],"Words":[{"Text":"5","BoundingPolygon":[{"X":923,"Y":495},{"X":956,"Y":496},{"X":955,"Y":554},{"X":921,"Y":553}],"Confidence":0.975}]},{"Text":"4","BoundingPolygon":[{"X":83,"Y":609},{"X":131,"Y":609},{"X":128,"Y":667},{"X":80,"Y":665}],"Words":[{"Text":"4","BoundingPolygon":[{"X":85,"Y":609},{"X":115,"Y":609},{"X":114,"Y":667},{"X":84,"Y":666}],"Confidence":0.997}]},{"Text":"7","BoundingPolygon":[{"X":454,"Y":607},{"X":494,"Y":608},{"X":492,"Y":666},{"X":452,"Y":664}],"Words":[{"Text":"7","BoundingPolygon":[{"X":462,"Y":607},{"X":492,"Y":608},{"X":490,"Y":666},{"X":460,"Y":665}],"Confidence":0.995}]},{"Text":"9","BoundingPolygon":[{"X":570,"Y":608},{"X":605,"Y":608},{"X":603,"Y":663},{"X":569,"Y":662}],"Words":[{"Text":"9","BoundingPolygon":[{"X":569,"Y":608},{"X":594,"Y":608},{"X":593,"Y":663},{"X":569,"Y":662}],"Confidence":0.886}]},{"Text":"1","BoundingPolygon":[{"X":1050,"Y":608},{"X":1081,"Y":608},{"X":1080,"Y":666},{"X":1050,"Y":666}],"Words":[{"Text":"1","BoundingPolygon":[{"X":1054,"Y":608},{"X":1081,"Y":608},{"X":1081,"Y":666},{"X":1054,"Y":666}],"Confidence":0.99}]},{"Text":"1","BoundingPolygon":[{"X":87,"Y":719},{"X":124,"Y":718},{"X":124,"Y":777},{"X":87,"Y":778}],"Words":[{"Text":"1","BoundingPolygon":[{"X":93,"Y":719},{"X":120,"Y":718},{"X":122,"Y":776},{"X":95,"Y":777}],"Confidence":0.994}]},{"Text":"9","BoundingPolygon":[{"X":312,"Y":719},{"X":361,"Y":719},{"X":360,"Y":775},{"X":309,"Y":774}],"Words":[{"Text":"9","BoundingPolygon":[{"X":313,"Y":719},{"X":342,"Y":719},{"X":341,"Y":775},{"X":312,"Y":775}],"Confidence":0.975}]},{"Text":"3","BoundingPolygon":[{"X":449,"Y":718},{"X":498,"Y":718},{"X":496,"Y":777},{"X":446,"Y":775}],"Words":[{"Text":"3","BoundingPolygon":[{"X":455,"Y":718},{"X":485,"Y":718},{"X":484,"Y":777},{"X":454,"Y":776}],"Confidence":0.997}]},{"Text":"5","BoundingPolygon":[{"X":675,"Y":718},{"X":720,"Y":720},{"X":719,"Y":777},{"X":672,"Y":777}],"Words":[{"Text":"5","BoundingPolygon":[{"X":673,"Y":718},{"X":703,"Y":719},{"X":702,"Y":778},{"X":672,"Y":777}],"Confidence":0.996}]},{"Text":"7","BoundingPolygon":[{"X":812,"Y":718},{"X":855,"Y":718},{"X":852,"Y":779},{"X":811,"Y":777}],"Words":[{"Text":"7","BoundingPolygon":[{"X":820,"Y":718},{"X":853,"Y":718},{"X":851,"Y":779},{"X":819,"Y":778}],"Confidence":0.963}]},{"Text":"3","BoundingPolygon":[{"X":314,"Y":858},{"X":356,"Y":859},{"X":354,"Y":915},{"X":314,"Y":914}],"Words":[{"Text":"3","BoundingPolygon":[{"X":318,"Y":858},{"X":347,"Y":859},{"X":345,"Y":915},{"X":316,"Y":914}],"Confidence":0.997}]},{"Text":"5","BoundingPolygon":[{"X":449,"Y":856},{"X":498,"Y":859},{"X":496,"Y":917},{"X":446,"Y":915}],"Words":[{"Text":"5","BoundingPolygon":[{"X":453,"Y":856},{"X":483,"Y":857},{"X":480,"Y":916},{"X":450,"Y":915}],"Confidence":0.996}]},{"Text":"1","BoundingPolygon":[{"X":678,"Y":857},{"X":719,"Y":859},{"X":719,"Y":915},{"X":675,"Y":917}],"Words":[{"Text":"1","BoundingPolygon":[{"X":683,"Y":857},{"X":714,"Y":857},{"X":714,"Y":917},{"X":683,"Y":917}],"Confidence":0.993}]},{"Text":"2","BoundingPolygon":[{"X":1041,"Y":857},{"X":1091,"Y":860},{"X":1090,"Y":914},{"X":1038,"Y":914}],"Words":[{"Text":"2","BoundingPolygon":[{"X":1050,"Y":857},{"X":1080,"Y":858},{"X":1078,"Y":915},{"X":1049,"Y":914}],"Confidence":0.996}]},{"Text":"6","BoundingPolygon":[{"X":88,"Y":966},{"X":127,"Y":967},{"X":125,"Y":1026},{"X":86,"Y":1025}],"Words":[{"Text":"6","BoundingPolygon":[{"X":87,"Y":966},{"X":117,"Y":967},{"X":116,"Y":1026},{"X":86,"Y":1025}],"Confidence":0.988}]},{"Text":"3","BoundingPolygon":[{"X":926,"Y":969},{"X":967,"Y":969},{"X":965,"Y":1023},{"X":925,"Y":1022}],"Words":[{"Text":"3","BoundingPolygon":[{"X":925,"Y":969},{"X":956,"Y":969},{"X":956,"Y":1023},{"X":925,"Y":1022}],"Confidence":0.972}]},{"Text":"9","BoundingPolygon":[{"X":927,"Y":1091},{"X":965,"Y":1091},{"X":963,"Y":1142},{"X":925,"Y":1141}],"Words":[{"Text":"9","BoundingPolygon":[{"X":925,"Y":1091},{"X":951,"Y":1091},{"X":951,"Y":1142},{"X":925,"Y":1141}],"Confidence":0.975}]}]}]}</value>
+  </data>
+</root>
