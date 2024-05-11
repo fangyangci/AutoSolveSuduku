@@ -1,7 +1,9 @@
+﻿using Azure.AI.Vision.ImageAnalysis;
 using Newtonsoft.Json;
 using ShuDu.Properties;
 using System.Data;
 using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 
 namespace ShuDu
 {
@@ -27,7 +29,7 @@ namespace ShuDu
 
             public float WordWidth
             {
-                get 
+                get
                 {
                     if (_width == 0)
                     {
@@ -59,12 +61,11 @@ namespace ShuDu
             }
         }
 
-        private SizeF _picInitSize;
-
         private Point _startPosition;
         private Direction _curDirection = Direction.None;
+        private Point[]? _bottomBtns;
 
-        private int ConstWidth => Settings.Default.ConstWidth;
+        private int ConstWidth => 32;
         private const int ProtectSize = 0;
         private const int ConstDiff = 4;
         private int StartX
@@ -76,9 +77,9 @@ namespace ShuDu
                     Settings.Default.StartX = EndX - ProtectSize;
                     return;
                 }
-                if (value < pictureBox.Location.X + ProtectSize)
+                if (value < ProtectSize)
                 {
-                    Settings.Default.StartX = pictureBox.Location.X + ProtectSize;
+                    Settings.Default.StartX = ProtectSize;
                     return;
                 }
                 Settings.Default.StartX = value;
@@ -97,9 +98,9 @@ namespace ShuDu
                     Settings.Default.StartY = EndY - ProtectSize;
                     return;
                 }
-                if (value < pictureBox.Location.Y + ProtectSize)
+                if (value < ProtectSize)
                 {
-                    Settings.Default.StartY = pictureBox.Location.Y + ProtectSize;
+                    Settings.Default.StartY = ProtectSize;
                     return;
                 }
                 Settings.Default.StartY = value;
@@ -118,9 +119,9 @@ namespace ShuDu
                     Settings.Default.EndX = StartX + ProtectSize;
                     return;
                 }
-                if (value > pictureBox.Location.X + pictureBox.Width - ProtectSize)
+                if (value > Screen.FromControl(this).Bounds.Width - ProtectSize)
                 {
-                    Settings.Default.EndX = pictureBox.Location.X + pictureBox.Width - ProtectSize;
+                    Settings.Default.EndX = Width - ProtectSize;
                     return;
                 }
                 Settings.Default.EndX = value;
@@ -139,7 +140,7 @@ namespace ShuDu
                     Settings.Default.EndY = StartY + ProtectSize;
                     return;
                 }
-                if (value > pictureBox.Location.Y + pictureBox.Height - ProtectSize)
+                if (value > Height - ProtectSize)
                 {
                     return;
                 }
@@ -161,56 +162,53 @@ namespace ShuDu
             }
         }
 
-        private dynamic? _result;
+        private Rectangle CurRect => new Rectangle(StartX, StartY, EndX - StartX, EndY - StartY);
+
+        private ReadResult? _result;
 
         private int[,] _data = new int[9, 9];
+        private PointF[,] _sudukuCells = new PointF[9, 9];
 
         public MainForm()
         {
             InitializeComponent();
-            _picInitSize = new SizeF(pictureBox.Width, pictureBox.Height);
-            pictureBox.BringToFront();
 
-            pictureBox.Image = Resources.Sample;
+            BackColor = Color.LimeGreen;
+            TransparencyKey = Color.LimeGreen;
+            TopMost = true;
+            CurStatusLabel.Visible = false;
+        }
 
-            FitPictureBox();
-
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            FormBorderStyle = FormBorderStyle.None;
             RefreshScale();
-        }
 
-        private void SelectPngBtn_Click(object sender, EventArgs e)
-        {
-            using (var fd = new OpenFileDialog())
+            for (int i = 1; i < 10; i++)
             {
-                if (fd.ShowDialog() == DialogResult.OK)
-                {
-                    pictureBox.Load(fd.FileName);
-                    FitPictureBox();
-                }
+                dataGridView.Rows.Add();
             }
+            foreach (DataGridViewColumn item in dataGridView.Columns)
+            {
+                item.Width = dataGridView.Width / 9;
+            }
+            foreach (DataGridViewRow item in dataGridView.Rows)
+            {
+                item.Height = dataGridView.Height / 9;
+            }
+            dataGridView.ClearSelection();
+
+            LoadDataToDataGridView(true);
+            LoadBottomBtns();
         }
 
-        private void FitPictureBox()
+        private void LoadBottomBtns()
         {
-            var scaleW = pictureBox.Image.Width / _picInitSize.Width;
-            var scaleH = pictureBox.Image.Height / _picInitSize.Height;
-            var maxScale = Math.Max(scaleW, scaleH);
-            var tmpSize = new SizeF(pictureBox.Image.Width / maxScale, pictureBox.Image.Height / maxScale);
-
-            pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox.Size = tmpSize.ToSize();
-
-            RecognizeBtn.Enabled = true;
-            RefreshScale();            
+            _bottomBtns = JsonConvert.DeserializeObject<Point[]>(Settings.Default.BottomNumJson);
+            BottomBtnsReadyLabel.Visible = _bottomBtns != null;
         }
 
-        private void pictureBox_Paint(object sender, PaintEventArgs e)
-        {
-            e.Graphics.DrawRectangle(new Pen(Color.Green, 3),
-                StartX - pictureBox.Location.X, StartY - pictureBox.Location.Y,
-                EndX - StartX, EndY - StartY);
-        }
-
+        #region SelectRect
         private void pictureBoxScale_MouseUp(object sender, MouseEventArgs e)
         {
             CurDirection = Direction.None;
@@ -279,7 +277,7 @@ namespace ShuDu
                 default:
                     break;
             }
-            pictureBox.Refresh();
+            Refresh();
         }
 
         private void RefreshScale()
@@ -307,39 +305,20 @@ namespace ShuDu
             pictureBoxLeftBottom.Location = new Point(StartX - ConstWidth / 2, EndY - ConstWidth / 2);
             pictureBoxRightBottom.Location = new Point(EndX - ConstWidth / 2, EndY - ConstWidth / 2);
         }
+        #endregion
 
-        private void RecognizeBtn_Click(object sender, EventArgs e)
+        private void SudukuNumbers_Click(object sender, EventArgs e)
         {
-            SuduCacalate.Text = "Image recognizing...";
-            SuduCacalate.Enabled = false;
-            Settings.Default.Save();
+            curIndex = 0;
             Task.Run(async () =>
             {
-                var orgImage = new Bitmap(pictureBox.Image);
-                var curScaleX = pictureBox.Image.Width / (float)pictureBox.Width;
-                var curScaleY = pictureBox.Image.Height / (float)pictureBox.Height;
-
-                var tmpStartX = (StartX - pictureBox.Location.X) * curScaleX;
-                var tmpStartY = (StartY - pictureBox.Location.Y) * curScaleY;
-                var tmpEndX = (EndX - pictureBox.Location.X) * curScaleX;
-                var tmpEndY = (EndY - pictureBox.Location.Y) * curScaleY;
-
-                var cropArea = new RectangleF(tmpStartX, tmpStartY, tmpEndX - tmpStartX, tmpEndY - tmpStartY);
-
-                var bmpCrop = orgImage.Clone(cropArea, orgImage.PixelFormat);
-                using (var ms = new MemoryStream())
+                await ComputerVisionAsync();
+                if (_result == null)
                 {
-                    bmpCrop.Save(ms, ImageFormat.Bmp);
-                    ms.Seek(0, SeekOrigin.Begin);
-                    _result = await AzureComputerVision.AnalyzeImageUrl(BinaryData.FromStream(ms));
-                    Invoke((MethodInvoker)delegate
-                    {
-                        LoadDataToDataGridView();
-                        SuduCacalate.Text = "Sudu Caculate";
-                        SuduCacalate.Enabled = true;
-                    });
+                    return;
                 }
-            });
+                LoadDataToDataGridView();
+            });            
         }
 
         private void LoadDataToDataGridView(bool useSampleJson = false)
@@ -380,6 +359,7 @@ namespace ShuDu
             var cellStartPos = new PointF(avgXMin + wordWidth / 2, avgYMin + wordHeight / 2);
 
             _data = new int[9, 9];
+            _sudukuCells = new PointF[9, 9];
 
             foreach (var item in allData)
             {
@@ -395,9 +375,11 @@ namespace ShuDu
                 {
                     int word = words[i];
 
-                    var posYF = (item.Ys.Average() - cellStartPos.Y) / cellHeight;
-                    var posXF = (((item.Xs.Min() + wordWidth / 2) - cellStartPos.X) / cellWidth) + i;
-                    _data[(int)Math.Round(posXF), (int)Math.Round(posYF)] = word;
+                    var posYF = (int)Math.Round((item.Ys.Average() - cellStartPos.Y) / cellHeight);
+                    var posXF = (int)Math.Round((((item.Xs.Min() + wordWidth / 2) - cellStartPos.X) / cellWidth) + i);
+
+                    _data[posXF, posYF] = word;
+                    _sudukuCells[posXF, posYF] = new PointF((float)item.Xs.Average(), (float)item.Ys.Average());
                 }
             }
 
@@ -418,10 +400,80 @@ namespace ShuDu
                     }
                 }
             }
+
+            var rowsY = new List<float>[9];
+            var columnsX = new List<float>[9];
+            for (int i = 0; i < 9; i++)
+            {
+                rowsY[i] = new List<float>();
+                columnsX[i] = new List<float>();
+            }
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    if (_sudukuCells[i, j].IsEmpty)
+                    {
+                        continue;
+                    }
+                    rowsY[j].Add(_sudukuCells[i, j].Y);
+                    columnsX[i].Add(_sudukuCells[i, j].X);
+                }
+            }
+
+            var avgX = new float[9];
+            var avgY = new float[9];
+            for (int i = 0; i < 9; i++)
+            {
+                avgY[i] = rowsY[i].Average();
+                avgX[i] = columnsX[i].Average();
+            }
+            for (int i = 1; i < 8; i++)
+            {
+                if (avgX[i] == 0)
+                {
+                    avgX[i] = (avgX[i - 1] + avgX[i + 1]) / 2;
+                }
+                if (avgY[i] == 0)
+                {
+                    avgY[i] = (avgY[i - 1] + avgY[i + 1]) / 2;
+                }
+            }
+            if (avgX[0] == 0)
+            {
+                avgX[0] = avgX[1] * 2 - avgX[2];
+            }
+            if (avgY[0] == 0)
+            {
+                avgY[0] = avgY[1] * 2 - avgY[2];
+            }
+
+            if (avgX[8] == 0)
+            {
+                avgX[8] = avgX[7] * 2 - avgX[6];
+            }
+            if (avgY[8] == 0)
+            {
+                avgY[8] = avgY[7] * 2 - avgY[6];
+            }
+
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    _sudukuCells[i, j] = new PointF(avgX[i] + StartX, avgY[j] + StartY);
+                }
+            }
         }
+
+        private int curIndex = 0;
 
         private void SuduCaculate_Click(object sender, EventArgs e)
         {
+            var pos = Cursor.Position;
+            curIndex++;
+            Refresh();
+            var tmpIndex = 0;
             var result = SudoCaculate.Caculate(_data);
             for (int i = 0; i < 9; i++)
             {
@@ -431,7 +483,13 @@ namespace ShuDu
                     tmpCell.Value = result[i, j];
                     if (_data[i, j] == 0)
                     {
+                        tmpIndex++;
                         tmpCell.Style.BackColor = Color.White;
+                        if (tmpIndex == curIndex && _bottomBtns != null)
+                        {
+                            MouseOperations.DoMouseClick((int)_sudukuCells[i, j].X, (int)_sudukuCells[i, j].Y);
+                            MouseOperations.DoMouseClick(_bottomBtns[result[i,j]].X, _bottomBtns[result[i, j]].Y);
+                        }                        
                     }
                     else
                     {
@@ -439,12 +497,13 @@ namespace ShuDu
                     }
                 }
             }
+            Cursor.Position = pos;
         }
 
         private List<WordData> GetResultData(bool useSampleJson = false)
         {
             var allWords = new List<WordData>();
-            
+
             var jsonResult = useSampleJson ? JsonConvert.DeserializeObject<dynamic>(Resources.SampleJson) : _result;
             if (jsonResult == null)
             {
@@ -469,28 +528,98 @@ namespace ShuDu
             return allWords;
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            for (int i = 1; i < 10; i++)
-            {
-                dataGridView.Rows.Add();
-            }
-            foreach (DataGridViewColumn item in dataGridView.Columns)
-            {
-                item.Width = dataGridView.Width / 9;
-            }
-            foreach (DataGridViewRow item in dataGridView.Rows)
-            {
-                item.Height = dataGridView.Height / 9;
-            }
-            dataGridView.ClearSelection();
-
-            LoadDataToDataGridView(true);
-        }
-
         private void MainForm_MouseClick(object sender, MouseEventArgs e)
         {
             dataGridView.ClearSelection();
+        }
+
+        private void MainForm_Paint(object sender, PaintEventArgs e)
+        {
+            //if (test)
+            //{
+            //    for (int i = 0; i < 9; i++)
+            //    {
+            //        for (int j = 0; j < 9; j++)
+            //        {
+            //            e.Graphics.FillRectangle(new SolidBrush(Color.Green), new Rectangle(
+            //                (int)Math.Round(_sudukuCells[i, j].X) + 5,
+            //                (int)Math.Round(_sudukuCells[i, j].Y) + 5,
+            //                10,
+            //                10
+            //            ));
+            //        }
+            //    }
+            //}
+            //else
+            {
+                e.Graphics.DrawRectangle(new Pen(Color.Green, 3), CurRect);
+            }
+        }
+
+        private void BottomNumbers_Click(object sender, EventArgs e)
+        {
+            Task.Run(async () =>
+            {
+                await ComputerVisionAsync();
+                if (_result == null)
+                {
+                    return;
+                }
+
+                var numbers = new Point[10];
+
+                foreach (var block in _result.Blocks)
+                {
+                    foreach (var item in block.Lines)
+                    {
+                        if (!int.TryParse(item.Text, out var num))
+                        {
+                            continue;
+                        }
+                        var centerX = (int)Math.Round(item.BoundingPolygon.Select(s => s.X).Average());
+                        var centerY = (int)Math.Round(item.BoundingPolygon.Select(s => s.Y).Average());
+                        numbers[num] = new Point(centerX + StartX, centerY + StartY);
+                    }
+                }
+                var numberJson = JsonConvert.SerializeObject(numbers);
+                Settings.Default.BottomNumJson = numberJson;
+                Settings.Default.Save();
+                LoadBottomBtns();
+            });
+        }
+
+        private Bitmap GetSelectBitmap()
+        {
+            Bitmap bitmap = new Bitmap(CurRect.Width, CurRect.Height, PixelFormat.Format32bppArgb);
+            using (Graphics memoryGrahics = Graphics.FromImage(bitmap))
+            {
+                memoryGrahics.CopyFromScreen(CurRect.X, CurRect.Y, 0, 0, CurRect.Size, CopyPixelOperation.SourceCopy);
+            }
+            bitmap.Save("./selectBitMap.jpg", ImageFormat.Jpeg);
+            return bitmap;
+        }
+
+        private async Task ComputerVisionAsync()
+        {
+            Settings.Default.Save();
+            Invoke((MethodInvoker)delegate
+            {
+                CurStatusLabel.Visible = true;
+                CurStatusLabel.Text = "Image recognizing...";
+            });
+
+            var selectBitMap = GetSelectBitmap();
+            using (var ms = new MemoryStream())
+            {
+                selectBitMap.Save(ms, ImageFormat.Bmp);
+                ms.Seek(0, SeekOrigin.Begin);
+                _result = await AzureComputerVision.AnalyzeImageUrl(BinaryData.FromStream(ms));
+            }
+
+            Invoke((MethodInvoker)delegate
+            {
+                CurStatusLabel.Visible = false;
+            });
         }
     }
 }

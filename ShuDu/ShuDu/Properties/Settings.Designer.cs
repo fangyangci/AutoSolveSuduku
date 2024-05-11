@@ -82,5 +82,17 @@ namespace ShuDu.Properties {
                 this["ConstWidth"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string BottomNumJson {
+            get {
+                return ((string)(this["BottomNumJson"]));
+            }
+            set {
+                this["BottomNumJson"] = value;
+            }
+        }
     }
 }
